@@ -1,0 +1,3 @@
+infer:
+    cd /home/ng6309/datascience/rakesh/pdf-document-layout-analysis-main/src
+    python -m  pdf_layout_analysis.run_pdf_layout_analysis

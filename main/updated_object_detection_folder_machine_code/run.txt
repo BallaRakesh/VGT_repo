@@ -1,0 +1,48 @@
+infer:
+     python inference.py --image_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/images/' --grid_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/grid_folder/' --image_name page_0 --dataset doclaynet --output_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/output/'  --config /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/doclaynet_VGT_cascade_PTM.yaml --opts MODEL.WEIGHTS  '/home/ng6309/datascience/rakesh/VGT/doclaynet_VGT_model.pth'
+     python inference_loop.py --image_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/images/' --grid_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/grid_folder/' --image_name page_0 --dataset publaynet --output_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/output/'  --config /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/publaynet_VGT_cascade_PTM.yaml --opts MODEL.WEIGHTS  '/home/ng6309/datascience/rakesh/VGT/finetuned_models/publaynet_VGT_model.pth' 
+     python inference_loop.py --image_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/images/' --grid_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/grid_folder/' --image_name page_0 --dataset docbank --output_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/output/'  --config /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/docbank_VGT_cascade_PTM.yaml --opts MODEL.WEIGHTS  '/home/ng6309/datascience/rakesh/VGT/finetuned_models/docbank_VGT_model.pth'
+     python inference_loop.py --image_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/images/' --grid_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/grid_folder/' --image_name page_0 --dataset D4LA --output_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_testing/output/'  --config /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/D4LA_VGT_cascade_PTM.yaml --opts MODEL.WEIGHTS  '/home/ng6309/datascience/rakesh/VGT/finetuned_models/D4LA_VGT_model.pth'
+
+     python inference.py --image_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/images/' --grid_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/sample_grid_files/' --image_name Bill_of_lading_535_page_0 --dataset doclaynet --output_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/out/'  --config /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/D4LA_VGT_cascade_PTM.yaml --opts MODEL.WEIGHTS  '/home/ng6309/datascience/rakesh/VGT/finetuned_models/D4LA_VGT_model.pth'
+     python inference.py --image_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/images/' --grid_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/sample_grid_files/' --image_name Bill_of_lading_3_page_0 --dataset doclaynet --output_root '/home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/out/'  --config /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/D4LA_VGT_cascade_PTM.yaml --opts MODEL.WEIGHTS  '/home/ng6309/datascience/rakesh/VGT/finetuned_models/D4LA_VGT_model.pth'
+
+grid:
+    python create_grid_input.py --pdf '/home/ng6309/datascience/rakesh/VGT/outputs/outputs/downloads/extracted/samples/small_dataset/test/pdfs/5b6ced4c8d7dcca21f39f48ddc03f03521dc57e447240b6555b9abf21b1310a2.pdf' --output '/home/ng6309/datascience/rakesh/VGT/outputs/grid_folder' --model 'doclaynet'
+
+train:
+     python train_VGT.py --config-file /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/doclaynet_VGT_cascade_PTM.yaml --num-gpus 1 MODEL.WEIGHTS /home/ng6309/datascience/rakesh/VGT/pretrained_models/VGT_pretrain_model.pth OUTPUT_DIR /home/ng6309/datascience/rakesh/VGT/outputs/model_output
+     nohup python train_VGT.py --config-file /home/ng6309/datascience/rakesh/VGT/object_detection/Configs/cascade/D4LA_VGT_cascade_PTM.yaml --num-gpus 1 MODEL.WEIGHTS /home/ng6309/datascience/rakesh/VGT/finetuned_models/D4LA_VGT_model.pth OUTPUT_DIR /home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data/genai_pf_output/org_repo_model_output > train_vgt_feb26.out &
+NOte:
+     last time trained model results saving location | genai platform VS org repo
+     /home/ng6309/datascience/rakesh/VGT/outputs/sample_vgt_data
+
+In traing original repo, we have commented the 'resume_or_load' and trained the model , meaning, we have trained from sctrach , this is same as genai platform!!
+    trainer = MyTrainer(cfg)
+    print(args.resume)
+    print(type(args.resume))
+    # trainer.resume_or_load(resume=args.resume) <=====>****
+    
+    
+    
+    
+  in genai repo
+  we made this changes , make a note of it 
+  file: /home/ng6309/datascience/rakesh/GenAI_Platform/common_modules/src/chunk_inference/VGT_chunker_infer.py
+  changes:
+  
+  
+          self.md_classes_list = ['DocTitle', 'Question', 'Table', 'Figure', 'PageHeader', 'PageFooter', 'ParaText', 'ParaTitle', 'PageNumber', 'OtherText', 'LetterHead', 'LetterSign', 'Date', 'RegionKV']
+        md.set(thing_classes=thing_classes)
+        cfg.MODEL.ROI_HEADS.NUM_CLASSES = 27 #len(md.thing_classes) 
+
+
+    
+class GenaiVGTChunker:
+    def __init__(self,device="cpu", model_weights=None, labels_list= ['DocTitle', 'Question', 'Table', 'Figure', 'PageHeader', 'PageFooter', 'ParaText', 'ParaTitle', 'PageNumber', 'OtherText', 'LetterHead', 'LetterSign', 'Date', 'RegionKV']):
+        self.device=device
+        self.model_weights=model_weights
+        # if you want to maintain the original labels list | org = 27 | current = 14
+        labels_list = ["DocTitle","ParaTitle","ParaText","ListText","RegionTitle", "Date", "LetterHead", "LetterDear", "LetterSign", "Question", "OtherText", "RegionKV", "Regionlist", "Abstract", "Author", "TableName", "Table", "Figure", "FigureName", "Equation", "Reference", "Footnote", "PageHeader", "PageFooter", "Number", "Catalog", "PageNumber"]
+        self.md_classes_list = labels_list
+
